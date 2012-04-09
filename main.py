@@ -1,12 +1,21 @@
 import urllib
 import sys
 import os
+import string
+import subprocess
 
+### Function to use
 def Usage():
 	print "python2 main.py <link>"
 
-urlDownload	=	sys.argv[1]
+### Begin with Check Link
+try:
+	urlDownload	=	sys.argv[1]
+except ValueError:
+	print urlDownload,"is deadlink."
+	Usage()
 
+### Main of program
 try:
 	#os.chdir('/home/n0b0dy/Download/')
 	if "http://" not in urlDownload:
@@ -15,15 +24,17 @@ try:
 	link		=	str(link.read())
 	name		=	link[link.index("<title>")+len("<title>"):link.index("</title>")]
 
+	### if in name have space , remove space
+	if " " in name:
+		name	=	string.replace(name," ","+")
+	
+	### locate your download link
 	lastIndexofDownload		=	link.index("/"+name)	+	len(name)	+	1
 	subLink					=	link[:lastIndexofDownload]
 	linkDownload			=	subLink[subLink.rfind("http://"):]
 	print "Downloading",linkDownload
-	#urllib.urlretrieve(linkDownload)
-
+	p	=	subprocess.Popen(["wget", linkDownload])
+	print 
 except IndexError:
 	print "URL is wrong"
-	Usage()
-except ValueError:
-	print urlDownload,"is deadlink."
 	Usage()
