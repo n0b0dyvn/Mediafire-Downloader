@@ -11,10 +11,14 @@ def Usage():
 ### Begin with Check Link
 try:
 	urlDownload	=	sys.argv[1]
+except IndexError:
+	print "URL is wrong"
+	Usage()
+	sys.exit(0)
 except ValueError:
 	print urlDownload,"is deadlink."
 	Usage()
-
+	sys.exit(0)
 ### Main of program
 try:
 	#os.chdir('/home/n0b0dy/Download/')
